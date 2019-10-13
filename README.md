@@ -91,3 +91,75 @@ Baker等人的結果顯示，政治偏袒這個因素，並不會對EPU Index的
 兩岸政治不確定性指標的波動程度比EPU指標來的大，尤其是自由時報的EPU指標，有明顯的波動。以下圖形列出了4次兩岸不確定性指數的高點，搭配了台灣發生的大型事件。比較特別的點在於，馬英九的總統大選前後，EPU指標並沒有明顯的上升，反而有下降之情形。但在蔡英文當選總統後的一個月後，EPU指數創了近20年新高。同一時間，自由時報在2016/02時的兩岸政治不確定性指標為326，一樣是歷史新高。
 
 <P Align=center><img src="https://i.imgur.com/RH4vtHl.png" width="70%"></p>
+
+指標編制方法 <i class="fa fa-book"></i>
+---
+- [ ] 於EPU_Index_TiTi.R中, 計算月的EPU指標。
+- [ ] 個國的 **[EPU Index](http://www.policyuncertainty.com)** 與編制方法:tada:
+
+<P Align=center><img src="https://i.imgur.com/HppxDix.jpg" width="60%"></p>
+
+
+
+
+```r=
+#==========================================================================
+# 編寫月的EPU指數 # TI-TI TUNG 
+# (2017/11/5)已完成跨報紙的指數計算，不過目前只用了3個報紙編寫，
+# 未來若要加入蘋果、甚至是其他報紙，一樣只需將所有新聞data合併成同一個list，
+# 先放入EPU_Counts()判定關鍵詞量之後，再將輸出的檔案引入此函數編寫出指數即可。
+# 此函數主要在做標準化(standardize)的動作
+#==========================================================================
+EPU_Index_m <- function(mydat) {
+  options(warn = -1)
+  if(is.list(mydat)) {
+    len = length
+    for (i in 1:len(mydat)) {
+    # 將日期改成月份
+    mydat[[i]]$date %<>% ymd %>% format("%Y-%m")
+    # 每個月詞彙的總次數(X = EPU / 該月總文章數)
+    counts <- mydat[[i]] %>% 
+      select(date, EPU) %>% 
+      group_by(date) %>% 
+      summarise(N = len(date), EPU = sum(EPU)) %>% 
+      mutate(X = (EPU/N)) %>% 
+      na.replace(0)
+      
+      # Step1: 以所有資料X來計算標準差(一個常數)
+      std <- sd(counts$X)
+      # Step2: 將X(Total_Counts)除以標準差計算出Y
+      counts %<>% mutate(Y = X / std)
+      
+      # 整理結果
+      if(i == 1) {
+        output <- select(counts, date, Y)
+      } else {
+        output <- merge(output, select(counts, date, Y), by = "date", all = TRUE)
+      }
+      
+    } # 計算各報紙的Y Loop 結束
+    
+    output %<>% na.replace(0)
+    # 產生一個data.frame，有日期與不同報紙的Y，此處把各報紙的名子標上
+    names(output) <- append("date", names(mydat))
+    
+      # Step3: 將全報紙的Y每月平均以算出Z，目前只計算一個報紙，所以Z=Y
+      if(len(output) > 2) {
+        output %<>% mutate(Z = rowMeans(.[,-1]))
+      } else {
+        colnames(output)[-1] <- "Z"
+      }
+      # Step4: 將時間數列中所有的Z取平均得到M(一個常數)
+      M <- mean(output$Z)
+      # Step5: 將Z乘以(100/M)取得EPU指數值！
+      output %<>% mutate(Index = Z * (100/M)) %>% 
+        select(date, Index)
+      
+  } else
+    stop("The format is wrong!")
+    options(warn = 1)
+  return(output)
+}
+
+
+```
