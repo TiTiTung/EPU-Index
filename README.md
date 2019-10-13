@@ -90,7 +90,7 @@ Baker等人的結果顯示，政治偏袒這個因素，並不會對EPU Index的
 
 兩岸政治不確定性指標的波動程度比EPU指標來的大，尤其是自由時報的EPU指標，有明顯的波動。以下圖形列出了4次兩岸不確定性指數的高點，搭配了台灣發生的大型事件。比較特別的點在於，馬英九的總統大選前後，EPU指標並沒有明顯的上升，反而有下降之情形。但在蔡英文當選總統後的一個月後，EPU指數創了近20年新高。同一時間，自由時報在2016/02時的兩岸政治不確定性指標為326，一樣是歷史新高。
 
-<P Align=center><img src="https://i.imgur.com/RH4vtHl.png" width="50%"></p>
+<P Align=center><img src="https://i.imgur.com/RH4vtHl.png" width="70%"></p>
 
 指標編制方法 <i class="fa fa-book"></i>
 ---
