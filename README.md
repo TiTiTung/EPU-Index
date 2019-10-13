@@ -98,12 +98,12 @@ Baker等人的結果顯示，政治偏袒這個因素，並不會對EPU Index的
 - [ ] 於EPU_Index_TiTi.R中, 計算月的EPU指標。
 - [ ] 個國的 **[EPU Index](http://www.policyuncertainty.com)** 與編制方法:tada:
 
-<P Align=center><img src="https://i.imgur.com/HppxDix.jpg" width="60%"></p>
+<img src="https://i.imgur.com/HppxDix.jpg" width="60%">
 
 
 
 
-```{r }
+```r =
 #==========================================================================
 # 編寫月的EPU指數 # TI-TI TUNG 
 # (2017/11/5)已完成跨報紙的指數計算，不過目前只用了3個報紙編寫，
